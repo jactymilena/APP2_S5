@@ -84,7 +84,7 @@ coeff_res = 0;
 
 kf = 0.95;
 b = 47;
-g = 9.81;
+g = 9.8;
 m = 80;
 mg = m*g;
 h1 = 10;
@@ -94,11 +94,11 @@ vf = 1;
 vi = sqrt(2*g*h1);
 
 % Point d'operation
-v0 = sqrt( (mg*(1-kf)) / b );
+v0 = sqrt( (mg.*(1-kf)) ./ b )
 
 % Constantes
-C = ( (g*(1-kf)) / v0 ) - ( b / m );
-K = ( (g*(1+kf)) / v0^2 ) - ( (b*v0) / m );
+C = ( (g.*(1-kf)) ./ v0 ) - ( b.*v0 ./ m )
+K = ( (g.*(1+kf)) ./ v0.^2 ) - ( (b.*v0) ./ m );
 
 % Vitesses
 dvi = vi - v0;
