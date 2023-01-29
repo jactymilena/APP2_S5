@@ -6,29 +6,29 @@ close all % vide fenetres et graphiques
 
 %% Trajectoire - polynome d'interpolation
 
-x = [0 8 15 20 25 ];
-y = [ 30 19 20 16 12.7843 ];
+xn = [0 8 15 20 25 ];
+yn = [ 30 19 20 16 12.7843 ];
 names = {'A', 'B', 'C', 'D', 'E'}
 
-p = [ 1 x(1) x(1)^2 x(1)^3 x(1)^4;
-      1 x(2) x(2)^2 x(2)^3 x(2)^4;
-      1 x(3) x(3)^2 x(3)^3 x(3)^4;
-      1 x(4) x(4)^2 x(4)^3 x(4)^4;
-      1 x(5) x(5)^2 x(5)^3 x(5)^4 ]
+p = [ 1 xn(1) xn(1)^2 xn(1)^3 xn(1)^4;
+      1 xn(2) xn(2)^2 xn(2)^3 xn(2)^4;
+      1 xn(3) xn(3)^2 xn(3)^3 xn(3)^4;
+      1 xn(4) xn(4)^2 xn(4)^3 xn(4)^4;
+      1 xn(5) xn(5)^2 xn(5)^3 xn(5)^4 ]
       
 
-coeff = pinv(p'*p)*p'*y'
+coeff = pinv(p'*p)*p'*yn'
 
 r = roots([coeff(5)*4 coeff(4)*3 coeff(3)*2 coeff(2)])
-xn = linspace(0,25);
-yn = coeff(1) + coeff(2)*xc + coeff(3)*xc.^2 + coeff(4)*xc.^3 + coeff(5)*xc.^4;
+x = linspace(0,25);
+y = coeff(1) + coeff(2)*x + coeff(3)*x.^2 + coeff(4)*x.^3 + coeff(5)*x.^4;
 
 figure
 hold on
-plot(x,y,'o')
-plot(xn, yn)
+plot(xn, yn, 'o')
+plot(x, y)
 title("Polynôme d'interpolation")
-text(x, y+0.45, names)
+text(xn, yn+0.45, names)
 hold off
 
 %% Trajectoire - polynome d'approximation
