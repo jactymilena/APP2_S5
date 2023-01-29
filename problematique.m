@@ -97,14 +97,12 @@ vi = sqrt(2*g*h1);
 v0 = sqrt( (mg.*(1-kf)) ./ b )
 
 % Constantes
-C = ( (g.*(1-kf)) ./ v0 ) - ( b.*v0 ./ m )
-K = ( (g.*(1+kf)) ./ v0.^2 ) - ( (b.*v0) ./ m );
+C = ( (g*(1-kf)) / v0 ) - ( b*v0 / m );
+K = ( (-g*(1-kf)) / v0^2 ) - ( b / m );
 
 % Vitesses
 dvi = vi - v0;
 dvf = vf - v0;
 
 % Hauteur z
-z = ( (dvf^2 - dvi^2) / 2*C ) * -K 
-
-
+z = (log(dvf) - log(dvi)) ./ K 
