@@ -7,8 +7,8 @@ close all % vide fenetres et graphiques
 %% Trajectoire - polynome d'interpolation
 
 x = [0 8 15 20 25 ];
-y = [ 30 19 20 16 15 ];
-n = 5;
+y = [ 30 19 20 16 12.7843 ];
+names = {'A', 'B', 'C', 'D', 'E'}
 
 p = [ 1 x(1) x(1)^2 x(1)^3 x(1)^4;
       1 x(2) x(2)^2 x(2)^3 x(2)^4;
@@ -20,20 +20,16 @@ p = [ 1 x(1) x(1)^2 x(1)^3 x(1)^4;
 coeff = pinv(p'*p)*p'*y'
 
 r = roots([coeff(5)*4 coeff(4)*3 coeff(3)*2 coeff(2)])
+xn = linspace(0,25);
+yn = coeff(1) + coeff(2)*xc + coeff(3)*xc.^2 + coeff(4)*xc.^3 + coeff(5)*xc.^4;
 
- 
-
-%[p,S] = polyfit(x,y,n);
-
-%x1 = linspace(0,25);
-%y1 = polyval(p,x1);
-%figure
-%plot(x,y,'o')
-%hold on
-%plot(x1,y1)
-%hold off
- 
-
+figure
+hold on
+plot(x,y,'o')
+plot(xn, yn)
+title("Polynôme d'interpolation")
+text(x, y+0.45, names)
+hold off
 
 %% Trajectoire - polynome d'approximation
 dx = 10;
@@ -106,3 +102,4 @@ dvf = vf - v0;
 
 % Hauteur z
 z = (log(dvf) - log(dvi)) ./ K 
+
