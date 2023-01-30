@@ -10,16 +10,18 @@ xn = [0 8 15 20 25 ];
 yn = [ 30 19 20 16 12.7843 ];
 names = {'A', 'B', 'C', 'D', 'E'}
 
-P = [ 1 xn(1) xn(1)^2 xn(1)^3 xn(1)^4;
-      1 xn(2) xn(2)^2 xn(2)^3 xn(2)^4;
-      1 xn(3) xn(3)^2 xn(3)^3 xn(3)^4;
-      1 xn(4) xn(4)^2 xn(4)^3 xn(4)^4;
-      1 xn(5) xn(5)^2 xn(5)^3 xn(5)^4 ]
+phi1 = ones(size(xn))';
+phi2 = xn';
+phi3 = (xn.^2)';
+phi4 = (xn.^3)';
+phi5 = (xn.^4)';
+
+P = [ phi1 phi2 phi3 phi4 phi5; ]
 
 A = pinv(P)*yn'
 
 r = roots([A(5)*4 A(4)*3 A(3)*2 A(2)])
-x = linspace(0,25);
+x = linspace(0, 25);
 g = A(1) + A(2)*x + A(3)*x.^2 + A(4)*x.^3 + A(5)*x.^4;
 
 figure
@@ -34,7 +36,7 @@ hold off
 dx = 10;
 xn = [0:dx:100];
 yn = [ 0.87 0.78 0.71 0.61 0.62 0.51 0.51 0.49 0.46 0.48 0.46 ];
-N=11;
+N = 11;
 
 %p = [ 1 xn(1) xn(1)^2 xn(1)^3 xn(1)^4 xn(1)^5 xn(1)^6 xn(1)^7;
 %      1 xn(2) xn(2)^2 xn(2)^3 xn(2)^4 xn(2)^5 xn(2)^6 xn(2)^7;
@@ -42,24 +44,84 @@ N=11;
 %      1 xn(4) xn(4)^2 xn(4)^3 xn(4)^4 xn(4)^5 xn(4)^6 xn(4)^7;
 %      1 xn(5) xn(5)^2 xn(5)^3 xn(5)^4 xn(5)^5 xn(5)^6 xn(5)^7 ]
 
+% Pour M = 8
+P8 =  [ N         sum(xn)    sum(xn.^2) sum(xn.^3)  sum(xn.^4)  sum(xn.^5)  sum(xn.^6)  sum(xn.^7);
+       sum(xn)    sum(xn.^2) sum(xn.^3) sum(xn.^4)  sum(xn.^5)  sum(xn.^6)  sum(xn.^7)  sum(xn.^8);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5)  sum(xn.^6)  sum(xn.^7)  sum(xn.^8)  sum(xn.^9);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6)  sum(xn.^7)  sum(xn.^8)  sum(xn.^9)  sum(xn.^10);
+       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7)  sum(xn.^8)  sum(xn.^9)  sum(xn.^10) sum(xn.^11);
+       sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8)  sum(xn.^9)  sum(xn.^10) sum(xn.^11) sum(xn.^12);
+       sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9)  sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13);
+       sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13) sum(xn.^14); ];
   
-P =  [ N sum(xn) sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7);
-       sum(xn) sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8);
-       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9);
-       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10);
-       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11);
-       sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12);
-       sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13);
-       sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13) sum(xn.^14); ]
-  
-Y =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) sum(yn.*xn.^5) sum(yn.*xn.^6) sum(yn.*xn.^7) ]'
-inv_P = inv(P)                                                            
-A = P\Y
+Y8 =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) sum(yn.*xn.^5) sum(yn.*xn.^6) sum(yn.*xn.^7) ]';                                                          
+A8 = P8\Y8;
 
+% Pour M = 7
+P7 =  [ N         sum(xn)    sum(xn.^2) sum(xn.^3)  sum(xn.^4)  sum(xn.^5)  sum(xn.^6);
+       sum(xn)    sum(xn.^2) sum(xn.^3) sum(xn.^4)  sum(xn.^5)  sum(xn.^6)  sum(xn.^7);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5)  sum(xn.^6)  sum(xn.^7)  sum(xn.^8);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6)  sum(xn.^7)  sum(xn.^8)  sum(xn.^9);
+       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7)  sum(xn.^8)  sum(xn.^9)  sum(xn.^10);
+       sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8)  sum(xn.^9)  sum(xn.^10) sum(xn.^11);
+       sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9)  sum(xn.^10) sum(xn.^11) sum(xn.^12); ];
+  
+Y7 =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) sum(yn.*xn.^5) sum(yn.*xn.^6) ]';                                                          
+A7 = P7\Y7;
+
+% Pour M = 6
+P6 =  [ N         sum(xn)    sum(xn.^2) sum(xn.^3)  sum(xn.^4)  sum(xn.^5);
+       sum(xn)    sum(xn.^2) sum(xn.^3) sum(xn.^4)  sum(xn.^5)  sum(xn.^6);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5)  sum(xn.^6)  sum(xn.^7);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6)  sum(xn.^7)  sum(xn.^8);
+       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7)  sum(xn.^8)  sum(xn.^9);
+       sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8)  sum(xn.^9)  sum(xn.^10); ];
+  
+Y6 =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) sum(yn.*xn.^5) ]';                                                          
+A6 = P6\Y6;
+
+% Pour M = 5
+P5 =  [ N         sum(xn)    sum(xn.^2) sum(xn.^3)  sum(xn.^4);
+       sum(xn)    sum(xn.^2) sum(xn.^3) sum(xn.^4)  sum(xn.^5);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5)  sum(xn.^6);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6)  sum(xn.^7);
+       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7)  sum(xn.^8); ];
+  
+Y5 =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) ]';                                                       
+A5 = P5\Y5;
+
+% Pour M = 4
+P4 =  [ N         sum(xn)    sum(xn.^2) sum(xn.^3);
+       sum(xn)    sum(xn.^2) sum(xn.^3) sum(xn.^4);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6); ];
+  
+Y4 =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) ]';                                                          
+A4 = P4\Y4;
+
+% Polynômes d'approximation
+x = linspace(0, 100);
+g8 = A8(1) + A8(2)*x + A8(3)*x.^2 + A8(4)*x.^3 + A8(5)*x.^4 + A8(6)*x.^5 + A8(7)*x.^6 + A8(8)*x.^7;
+g7 = A7(1) + A7(2)*x + A7(3)*x.^2 + A7(4)*x.^3 + A7(5)*x.^4 + A7(6)*x.^5 + A7(7)*x.^6;
+g6 = A6(1) + A6(2)*x + A6(3)*x.^2 + A6(4)*x.^3 + A6(5)*x.^4 + A6(6)*x.^5;
+g5 = A5(1) + A5(2)*x + A5(3)*x.^2 + A5(4)*x.^3 + A5(5)*x.^4;
+g4 = A4(1) + A4(2)*x + A4(3)*x.^2 + A4(4)*x.^3;
+
+% Erreur Quadratique
+E8 = (g8-yn)'*(g8-yn)
+% Erreur RMS
+%err_rms8 = sqrt(mean((g8-yn').*(g8-yn')))
+
+
+% Représentation
 figure
 plot(xn, yn, 'x')
 hold on
-%plot(P)
+plot(x, g8, 'red')
+plot(x, g7, 'green')
+plot(x, g6, 'blue')
+plot(x, g5, 'magenta')
+plot(x, g4, 'black')
 hold off
 
 %k = inv(p);
