@@ -34,15 +34,36 @@ hold off
 dx = 10;
 xn = [0:dx:100];
 yn = [ 0.87 0.78 0.71 0.61 0.62 0.51 0.51 0.49 0.46 0.48 0.46 ];
+N=11;
 
-p = [ 1 xn(1) xn(1)^2 xn(1)^3 xn(1)^4 xn(1)^5 xn(1)^6 xn(1)^7;
-      1 xn(2) xn(2)^2 xn(2)^3 xn(2)^4 xn(2)^5 xn(2)^6 xn(2)^7;
-      1 xn(3) xn(3)^2 xn(3)^3 xn(3)^4 xn(3)^5 xn(3)^6 xn(3)^7;
-      1 xn(4) xn(4)^2 xn(4)^3 xn(4)^4 xn(4)^5 xn(4)^6 xn(4)^7;
-      1 xn(5) xn(5)^2 xn(5)^3 xn(5)^4 xn(5)^5 xn(5)^6 xn(5)^7 ]
+%p = [ 1 xn(1) xn(1)^2 xn(1)^3 xn(1)^4 xn(1)^5 xn(1)^6 xn(1)^7;
+%      1 xn(2) xn(2)^2 xn(2)^3 xn(2)^4 xn(2)^5 xn(2)^6 xn(2)^7;
+%      1 xn(3) xn(3)^2 xn(3)^3 xn(3)^4 xn(3)^5 xn(3)^6 xn(3)^7;
+%      1 xn(4) xn(4)^2 xn(4)^3 xn(4)^4 xn(4)^5 xn(4)^6 xn(4)^7;
+%      1 xn(5) xn(5)^2 xn(5)^3 xn(5)^4 xn(5)^5 xn(5)^6 xn(5)^7 ]
 
-k = pinv(p)
-yn_t = yn'
+  
+P =  [ N sum(xn) sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7);
+       sum(xn) sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8);
+       sum(xn.^2) sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9);
+       sum(xn.^3) sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10);
+       sum(xn.^4) sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11);
+       sum(xn.^5) sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12);
+       sum(xn.^6) sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13);
+       sum(xn.^7) sum(xn.^8) sum(xn.^9) sum(xn.^10) sum(xn.^11) sum(xn.^12) sum(xn.^13) sum(xn.^14); ]
+  
+Y =  [ sum(yn) sum(yn.*xn) sum(yn.*xn.^2) sum(yn.*xn.^3) sum(yn.*xn.^4) sum(yn.*xn.^5) sum(yn.*xn.^6) sum(yn.*xn.^7) ]'
+inv_P = inv(P)                                                            
+A = P\Y
+
+figure
+plot(xn, yn, 'x')
+hold on
+%plot(P)
+hold off
+
+%k = inv(p);
+%yn_t = yn'
 %coeff = k.*yn_t
 
 %plot(xn, yn, 'o')
@@ -68,7 +89,9 @@ yn_t = yn'
 
 %% Coussin-trampoline
 
-mg = 9.81*80;
+m = 80 + 8;
+g = 9.8;
+mg = m*g;
 h0 = 5;
 hr = 0;
 k = 6000;
@@ -103,8 +126,8 @@ vi = sqrt(2*g*h1);
 v0 = sqrt( (mg.*(1-kf)) ./ b )
 
 % Constantes
-C = ( (g*(1-kf)) / v0 ) - ( b*v0 / m );
-K = ( (-g*(1-kf)) / v0^2 ) - ( b / m );
+C = ( (g*(1-kf)) / v0 ) - ( b*v0 / m )
+K = ( (-g*(1-kf)) / v0^2 ) - ( b / m )
 
 % Vitesses
 dvi = vi - v0;
