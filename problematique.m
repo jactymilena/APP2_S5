@@ -6,35 +6,26 @@ close all % vide fenetres et graphiques
 
 %% Trajectoire - polynome d'interpolation
 
-xn = [0 8 15 20 25 ];
-yn = [ 30 19 20 16 12.7843 ];
-names = {'A', 'B', 'C', 'D', 'E'}
+xnI = [0 8 15 20 25 ];
+ynI = [ 30 19 20 16 12.7843 ];
+names = {'A', 'B', 'C', 'D', 'E'};
 
-phi1 = ones(size(xn))';
-phi2 = xn';
-phi3 = (xn.^2)';
-phi4 = (xn.^3)';
-phi5 = (xn.^4)';
+phi1I = ones(size(xnI))';
+phi2I = xnI';
+phi3I = (xnI.^2)';
+phi4I = (xnI.^3)';
+phi5I = (xnI.^4)';
 
-%P = vander(xn)
+P = [ phi1I phi2I phi3I phi4I phi5I; ];
 
-P = [ phi1 phi2 phi3 phi4 phi5; ];
-
-A = pinv(P)*yn'
+A = pinv(P)*ynI'
 
 r = roots([A(5)*4 A(4)*3 A(3)*2 A(2)])
 x = linspace(0, 25);
-g = A(1) + A(2)*x + A(3)*x.^2 + A(4)*x.^3 + A(5)*x.^4;
+g_x = A(1) + A(2)*x + A(3)*x.^2 + A(4)*x.^3 + A(5)*x.^4;
 
-figure
-hold on
-plot(xn, yn, 'o')
-plot(x, g)
-title("Polynôme d'interpolation")
-text(xn, yn+0.45, names)
-hold off
 
-%% Trajectoire - polynome d'approximation
+% Trajectoire - polynome d'approximation
 dx = 10;
 xn = [0:dx:100];
 yn = [ 0.87 0.78 0.71 0.61 0.62 0.51 0.51 0.49 0.46 0.48 0.46 ];
@@ -91,6 +82,7 @@ plot(xn, g6, 'blue')
 plot(xn, g5, 'magenta')
 plot(xn, g4, 'black')
 plot(xn, g3, 'cyan')
+title("Polynôme d'approximation")
 hold off
 
 % Calcul des erreurs pour 5 et 6
@@ -109,6 +101,52 @@ R_2_5 = (sum((g5 - y_mean).^2)) / ( sum((yn - y_mean).^2) )
 R_2_6 = (sum((g6 - y_mean).^2)) / ( sum((yn - y_mean).^2) )
 
 % Choix : M = 6, car c'est dont la correlation est le plus proche de 1
+
+% Vitesses
+hi = 30;
+hf = 12.7843;
+g = 9.8;
+xf = 25;
+km_h = 1000/3600;
+
+% En posant la vitesse
+
+vf = 15*km_h;
+mu_15 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 20*km_h;
+mu_20 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 30*km_h;
+mu_30 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 35*km_h;
+mu_35 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 10*km_h;
+mu_10 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 25*km_h;
+mu_25 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+
+% Représentation en fonction de la vitesse en utilisant le polynôme d'interpolation
+hf = g_x;
+mu = (mu_20 + mu_25)/2;
+vf = sqrt(2*g*(hi - mu*xf - g_x))
+
+%figure
+%plot(vf)
+
+figure
+hold on
+plot(xnI, ynI, 'o')
+plot(x, g_x)
+plot(vf)
+title("Polynôme d'interpolation")
+text(xnI, ynI+0.45, names)
+hold off
+
 
 %% Coussin-trampoline
 
