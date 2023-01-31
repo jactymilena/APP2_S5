@@ -6,7 +6,7 @@ close all % vide fenetres et graphiques
 %% Trajectoire - polynome d'interpolation
 
 xnI = [0 8 15 20 25 ];
-ynI = [ 30 19 20 16 12.7843 ];
+ynI = [ 30 19 20 16 12.2662];
 names = {'A', 'B', 'C', 'D', 'E'};
 
 phi1I = ones(size(xnI))';
@@ -73,7 +73,7 @@ g3 = A3(1) + A3(2)*xn + A3(3)*xn.^2;
 
 % Représentation
 figure
-plot(xn, yn, 'x')
+
 hold on
 plot(xn, g8, 'red')
 plot(xn, g7, 'green')
@@ -81,7 +81,11 @@ plot(xn, g6, 'blue')
 plot(xn, g5, 'magenta')
 plot(xn, g4, 'black')
 plot(xn, g3, 'cyan')
+plot(xn, yn, 'x')
 title("Polynôme d'approximation")
+xlabel('Pourcentage ouverture de la valve (%)')
+ylabel('Coéfficient (\mu)')
+legend('M=8','M=7','M=6','M=5','M=4','M=3');
 hold off
 
 % Calcul des erreurs pour 5 et 6
@@ -139,31 +143,50 @@ v5 = sqrt(2.*g.*(hi - (mu_23.*x) - g_x));
 v6 = sqrt(2.*g.*(hi - (mu_24.*x) - g_x));
 v7 = sqrt(2.*g.*(hi - (mu_25.*x) - g_x));
 
+
 % Vrai vitesse selon mu = 0.62 (40%)
 mu = 0.62;
 v = sqrt(2.*g.*(hi - (mu.*x) - g_x))
+vRMS1 =  sqrt(2.*g.*(hi - ((mu-errr_rms_6).*x) - g_x));
+vRMS2 =  sqrt(2.*g.*(hi - ((mu+errr_rms_6).*x) - g_x));
+
 
 figure
 %plot(x, vf)
-plot(x, v1./km_h, 'blue')
+%plot(x, v1./km_h, 'blue')
 hold on
 plot(x, v2./km_h, 'red')
 plot(x, v3./km_h, 'magenta')
 plot(x, v4./km_h, 'green')
 plot(x, v5./km_h, 'cyan')
 plot(x, v6./km_h, 'black')
-plot(x, v7./km_h, 'yellow')
+plot(x, v7./km_h, 'blue')
 hold off
+title("Graphique des vitesses en fonction de la distance")
+xlabel('Distance en x (m)')
+ylabel('Vitesse (km/h)')
+legend('Vitesse finale = 20 km/h','Vitesse finale = 21 km/h','Vitesse finale = 22 km/h','Vitesse finale = 23 km/h','Vitesse finale = 24 km/h','Vitesse finale = 25 km/h')
+
 
 figure
 hold on
-plot(xnI, ynI, 'x')
 plot(x, g_x)
-plot(x, v./km_h, 'cyan')
+plot(xnI, ynI, 'x')
 title("Polynôme d'interpolation")
 text(xnI, ynI+0.45, names)
+xlabel('Distance en x (m)')
+ylabel('Distance en y (m)')
 hold off
 
+figure
+plot(x, v./km_h, 'cyan')
+hold on 
+plot(x,vRMS1./km_h)
+plot(x,vRMS2./km_h)
+hold off
+title("Vitesse de la trajectoire avec \mu = 0.62 avec RMSE")
+xlabel('Distance en x (m)')
+ylabel('Vitesse (km/h)')
 
 %% Coussin-trampoline
 
