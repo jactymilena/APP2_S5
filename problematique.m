@@ -1,4 +1,3 @@
-
 %% Clean up
 clc % vide ligne de commande
 clear all % vide workspace
@@ -111,40 +110,59 @@ km_h = 1000/3600;
 
 % En posant la vitesse
 
-vf = 15*km_h;
-mu_15 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
-
 vf = 20*km_h;
 mu_20 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
-vf = 30*km_h;
-mu_30 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+vf = 21*km_h;
+mu_21 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
-vf = 35*km_h;
-mu_35 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+vf = 22*km_h;
+mu_22 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
-vf = 10*km_h;
-mu_10 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+vf = 23*km_h;
+mu_23 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
+
+vf = 24*km_h;
+mu_24 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
 vf = 25*km_h;
 mu_25 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
 
 % Représentation en fonction de la vitesse en utilisant le polynôme d'interpolation
-hf = g_x;
-mu = (mu_20 + mu_25)/2;
-vf = sqrt(2*g*(hi - mu*xf - g_x))
+mu = (mu_20 + mu_25)./2;
+vf1 = sqrt(2.*g.*(hi - (mu.*x) - g_x));
+vf2 = sqrt(2.*g.*(hi - (mu_20.*x) - g_x));
+vf3 = sqrt(2.*g.*(hi - (mu_21.*x) - g_x));
+vf4 = sqrt(2.*g.*(hi - (mu_22.*x) - g_x));
+vf5 = sqrt(2.*g.*(hi - (mu_23.*x) - g_x));
+vf6 = sqrt(2.*g.*(hi - (mu_24.*x) - g_x));
+vf7 = sqrt(2.*g.*(hi - (mu_25.*x) - g_x));
 
-%figure
-%plot(vf)
+% Vrai vitesse selon mu = 0.62 (40%)
+mu = 0.62;
+v = sqrt(2.*g.*(hi - (mu.*x) - g_x))
+
+figure
+%plot(x, vf)
+plot(x, vf1./km_h, 'blue')
+hold on
+plot(x, vf2./km_h, 'red')
+plot(x, vf3./km_h, 'magenta')
+plot(x, vf4./km_h, 'green')
+plot(x, vf5./km_h, 'cyan')
+plot(x, vf6./km_h, 'black')
+plot(x, vf7./km_h, 'yellow')
+hold off
 
 figure
 hold on
-plot(xnI, ynI, 'o')
+plot(xnI, ynI, 'x')
 plot(x, g_x)
-plot(vf)
+plot(x, v./km_h, 'cyan')
 title("Polynôme d'interpolation")
 text(xnI, ynI+0.45, names)
+%plot(xnI, vf)
 hold off
 
 
@@ -165,10 +183,17 @@ hf1 = (-b + sqrt((b^2)-(4*a*c)))/(2*a)
 hf2 = (-b - sqrt((b^2)-(4*a*c)))/(2*a)
 
 %% Ballon-mousse et minuterie
-
-vb = -1;
+vbi = -1;
 mb = 8;
-coeff_res = 0;
+mp = 80;
+km_h = 1000/3600;
+Lt = 3;
+
+% G1 : ballon attrapé
+vpi = 20.8762*km_h;
+vpbf = (mp*vpi + mb*vbi) / (mp + mb)
+delta_t =  Lt/vpbf
+
 
 %% Bassin d'eau
 
@@ -196,4 +221,3 @@ dvf = vf - v0;
 
 % Hauteur z
 z = (log(dvf) - log(dvi)) ./ K 
-
