@@ -2,7 +2,7 @@
 %% Trajectoire - polynome d'interpolation
 
 xnI = [0 8 15 20 25 ];
-ynI = [ 30 19 20 16 12.7843 ];
+ynI = [ 30 19 20 16 12.2662 ];
 names = {'A', 'B', 'C', 'D', 'E'};
 
 phi1I = ones(size(xnI))';
