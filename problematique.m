@@ -131,13 +131,13 @@ mu_25 = ((hi - hf) - ((1/(2*g))*vf^2))/xf
 
 % Représentation en fonction de la vitesse en utilisant le polynôme d'interpolation
 mu = (mu_20 + mu_25)./2;
-vf1 = sqrt(2.*g.*(hi - (mu.*x) - g_x));
-vf2 = sqrt(2.*g.*(hi - (mu_20.*x) - g_x));
-vf3 = sqrt(2.*g.*(hi - (mu_21.*x) - g_x));
-vf4 = sqrt(2.*g.*(hi - (mu_22.*x) - g_x));
-vf5 = sqrt(2.*g.*(hi - (mu_23.*x) - g_x));
-vf6 = sqrt(2.*g.*(hi - (mu_24.*x) - g_x));
-vf7 = sqrt(2.*g.*(hi - (mu_25.*x) - g_x));
+v1 = sqrt(2.*g.*(hi - (mu.*x) - g_x));
+v2 = sqrt(2.*g.*(hi - (mu_20.*x) - g_x));
+v3 = sqrt(2.*g.*(hi - (mu_21.*x) - g_x));
+v4 = sqrt(2.*g.*(hi - (mu_22.*x) - g_x));
+v5 = sqrt(2.*g.*(hi - (mu_23.*x) - g_x));
+v6 = sqrt(2.*g.*(hi - (mu_24.*x) - g_x));
+v7 = sqrt(2.*g.*(hi - (mu_25.*x) - g_x));
 
 % Vrai vitesse selon mu = 0.62 (40%)
 mu = 0.62;
@@ -145,14 +145,14 @@ v = sqrt(2.*g.*(hi - (mu.*x) - g_x))
 
 figure
 %plot(x, vf)
-plot(x, vf1./km_h, 'blue')
+plot(x, v1./km_h, 'blue')
 hold on
-plot(x, vf2./km_h, 'red')
-plot(x, vf3./km_h, 'magenta')
-plot(x, vf4./km_h, 'green')
-plot(x, vf5./km_h, 'cyan')
-plot(x, vf6./km_h, 'black')
-plot(x, vf7./km_h, 'yellow')
+plot(x, v2./km_h, 'red')
+plot(x, v3./km_h, 'magenta')
+plot(x, v4./km_h, 'green')
+plot(x, v5./km_h, 'cyan')
+plot(x, v6./km_h, 'black')
+plot(x, v7./km_h, 'yellow')
 hold off
 
 figure
@@ -162,7 +162,6 @@ plot(x, g_x)
 plot(x, v./km_h, 'cyan')
 title("Polynôme d'interpolation")
 text(xnI, ynI+0.45, names)
-%plot(xnI, vf)
 hold off
 
 
@@ -183,16 +182,23 @@ hf1 = (-b + sqrt((b^2)-(4*a*c)))/(2*a)
 hf2 = (-b - sqrt((b^2)-(4*a*c)))/(2*a)
 
 %% Ballon-mousse et minuterie
+km_h = 1000/3600;
 vbi = -1;
+vpi = 20.8762*km_h;
 mb = 8;
 mp = 80;
-km_h = 1000/3600;
 Lt = 3;
 
 % G1 : ballon attrapé
-vpi = 20.8762*km_h;
+
 vpbf = (mp*vpi + mb*vbi) / (mp + mb)
-delta_t =  Lt/vpbf
+delta_t1 =  Lt/vpbf
+
+% G2 : ballon pas attrapé
+e = 0.8;
+vbf = (e*(vpi - vbi) + ((mp*vpi + mb*vbi) / mp)) / (1 + (mb/mp))
+vpf = (mp*vpi + mb*vbi - mb*vbf) / mp
+delta_t2 =  Lt/vpf
 
 
 %% Bassin d'eau
