@@ -56,3 +56,64 @@ plot(xn, g3, 'cyan')
 plot(xn, yn, 'o')
 legend('M=6', 'M=5', 'M=4', 'M=3')
 hold off
+
+%% Labo 1, Probleme 7
+
+% Reset
+clc 
+clear all
+close all
+
+xn = [ 2.3 14.7 29.7 31.9 45.7 58.6 ];
+hn = [ 184 860 1345 1385 1360 965 ];
+
+phi1 = ones(size(xn))';
+phi2 = xn';
+phi3 = (xn.^2)';
+
+P = [ phi1 phi2 phi3 ; ]
+A = pinv(P)*hn';
+
+x = linspace(2.3, 58.6);
+g = A(1) + A(2).*xn + A(3).*xn.^2;
+
+figure
+plot(xn, hn, 'o')
+hold on
+plot(xn, g)
+hold off
+
+err_rms = sqrt(mean((g - hn).^2))
+
+%% Labo 1, Probleme 8
+
+% Reset
+clc 
+clear all
+close all
+
+tn = [ 2 3 4 6 7 8 10 11 12 15 ];
+yn = [ 2.11 1.61 1.25 0.820 0.737 0.810 0.880 0.443 0.070 -0.493 ];
+p = 8;
+
+phi1 = ones(size(tn))';
+phi2 = tn';
+phi3 = cos((2*pi.*tn)./p)';
+phi4 = sin((2*pi.*tn)./p)';
+
+P = [ phi1 phi2, phi3 phi4 ; ];
+A = pinv(P)*yn';
+
+g = A(1) + A(2).*tn + A(3).*cos((2*pi.*tn)./p) + A(4).*sin((2*pi.*tn)./p);
+
+figure
+plot(tn, yn, 'o')
+hold on
+plot(tn, g)
+hold off
+
+% Erreur quadratique
+E = sum((g-yn).^2)
+err_rms = sqrt(mean((g-yn).^2))
+y_m = mean(yn);
+R = sum((g-y_m).^2) ./ sum((yn-y_m).^2)
